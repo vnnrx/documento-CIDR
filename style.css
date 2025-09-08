@@ -1,0 +1,13 @@
+body {font-family: Arial, sans-serif; margin:0; background:#f4f4f9; color:#333;}
+header {background:#2b6cb0; color:#fff; padding:1em;}
+header h1 {margin:0;}
+nav {margin-top:.5em;}
+nav a {color:#fff; margin-right:1em; text-decoration:none;}
+nav a.active, nav a:hover {text-decoration:underline;}
+main {padding:1.5em;}
+footer {background:#222; color:#ddd; text-align:center; padding:1em; margin-top:2em;}
+table {width:100%; border-collapse:collapse; margin-top:1em;}
+th, td {border:1px solid #ccc; padding:.5em; text-align:center;}
+input {padding:.5em; margin-right:.5em;}
+button {padding:.5em 1em; background:#2b6cb0; color:#fff; border:none; cursor:pointer;}
+button:hover {background:#1a4d80;}

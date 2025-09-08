@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia IPv4 - Calculadora</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    function calcularIPv4() {
+      const entrada = document.getElementById('ipInput').value.trim();
+      if (!entrada.includes('/')) {
+        alert('Digite no formato: 192.168.1.10/24');
+        return;
+      }
+      const [ip, prefix] = entrada.split('/');
+      const prefixo = parseInt(prefix);
+      const octetos = ip.split('.').map(Number);
+      if (octetos.length !== 4 || octetos.some(o => o < 0 || o > 255) || prefixo < 0 || prefixo > 32) {
+        alert('Formato inválido.');
+        return;
+      }
+      const ipNum = (octetos[0] << 24) | (octetos[1] << 16) | (octetos[2] << 8) | octetos[3];
+      const mask = prefixo === 0 ? 0 : (~0 << (32 - prefixo)) >>> 0;
+      const net = ipNum & mask;
+      const broadcast = net | (~mask >>> 0);
+      function toIP(num) { return [(num>>>24)&255,(num>>>16)&255,(num>>>8)&255,num&255].join('.'); }
+      const rede = toIP(net);
+      const bc = toIP(broadcast);
+      const primeiro = prefixo >= 31 ? rede : toIP(net+1);
+      const ultimo = prefixo >= 31 ? bc : toIP(broadcast-1);
+      const hosts = prefixo >= 31 ? 0 : Math.pow(2,32-prefixo)-2;
+      document.getElementById('resultadoCalc').innerHTML = `
+        <p><b>Endereço:</b> ${ip}</p>
+        <p><b>Máscara:</b> ${toIP(mask)} /${prefixo}</p>
+        <p><b>Rede:</b> ${rede}</p>
+        <p><b>Broadcast:</b> ${bc}</p>
+        <p><b>Primeiro host:</b> ${primeiro}</p>
+        <p><b>Último host:</b> ${ultimo}</p>
+        <p><b>Total de hosts:</b> ${hosts}</p>`;
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Guia IPv4</h1>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="classes.html">Classes</a>
+      <a href="privados.html">Privados</a>
+      <a href="publicos.html">Públicos</a>
+      <a href="especiais.html">Especiais</a>
+      <a href="barramento.html">Barramento</a>
+      <a href="calculadora.html" class="active">Calculadora</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Calculadora IPv4</h2>
+    <input id="ipInput" type="text" placeholder="Digite IP/máscara ex: 192.168.1.10/24">
+    <button onclick="calcularIPv4()">Calcular</button>
+    <div id="resultadoCalc"></div>
+  </main>
+  <footer><p>Guia IPv4 © 2025</p></footer>
+</body>
+</html>
