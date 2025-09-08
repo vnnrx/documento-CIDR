@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guia IPv4 — Consulta Rápida</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#60a5fa; --glass: rgba(255,255,255,0.04);
+      --success:#34d399; --danger:#fb7185; --surface:#081029; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#071024 0%, #071733 40%, #071124 100%);color:#e6eef8;-webkit-font-smoothing:antialiased}
+    header{display:flex;align-items:center;gap:16px;padding:18px 28px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);backdrop-filter: blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#042f4a;font-weight:700}
+    h1{font-size:18px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    nav{margin-left:auto;display:flex;gap:12px;align-items:center}
+    .btn{background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px;color:var(--accent);cursor:pointer;font-weight:600}
+    .container{display:grid;grid-template-columns:320px 1fr;gap:20px;padding:22px}
+    aside{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);height:calc(100vh - 120px);overflow:auto}
+    .menu-section{margin-bottom:18px}
+    .menu-section h3{font-size:13px;margin:6px 0;color:var(--muted)}
+    .menu a{display:block;padding:10px;border-radius:8px;color:inherit;text-decoration:none;margin:6px 0;border:1px solid transparent}
+    .menu a:hover{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.02)}
+    .content{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));min-height:70vh;border:1px solid rgba(255,255,255,0.03)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:14px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.02)}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:8px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left}
+    th{color:var(--muted);font-weight:600}
+    .kbd{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px;font-family:monospace;font-size:12px}
+    .muted{color:var(--muted);font-size:13px}
+    details{background:rgba(255,255,255,0.01);border-radius:8px;padding:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
+    summary{cursor:pointer;font-weight:600}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+    .top-actions{display:flex;gap:8px}
+    pre{background:#041225;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
+    .copy-btn{float:right;background:transparent;border:none;color:var(--accent);cursor:pointer;font-weight:700}
+    @media(max-width:900px){.container{grid-template-columns:1fr;}.brand h1{font-size:16px}}
+    .download{background:linear-gradient(90deg,var(--accent),#7dd3fc);color:#001628;border:none}
+    .search{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+    .table-scroll{overflow:auto}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">IP</div>
+      <div>
+        <h1>Guia IPv4 — Consulta Rápida</h1>
+        <p class="lead">Classes, faixas públicas/privadas, capacidade ("barramento") e recomendações — pronto para GitHub Pages.</p>
+      </div>
+    </div>
+    <nav>
+      <div class="top-actions">
+        <button class="btn" id="printBtn">Imprimir</button>
+        <button class="btn" id="downloadBtn">Baixar HTML</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside>
+      <input placeholder="Pesquisar (ex: 172.16)" class="search" id="searchBox">
+      <div class="menu-section">
+        <h3>Seções</h3>
+        <nav class="menu">
+          <a href="#classes">Classes (A/B/C/D/E)</a>
+          <a href="#privadas">Faixas Privadas (RFC1918)</a>
+          <a href="#especiais">Faixas Especiais</a>
+          <a href="#barramento">Barramento / Capacidade</a>
+          <a href="#recomendacoes">Recomendações</a>
+          <a href="#exemplos">Exemplos de Plano</a>
+          <a href="#glossario">Glossário</a>
+          <a href="#anexo">Anexo — Cálculos</a>
+        </nav>
+      </div>
+      <div class="menu-section">
+        <h3>Utilitários</h3>
+        <div style="display:flex;gap:8px;flex-direction:column">
+          <button class="btn" id="copyAll">Copiar tudo</button>
+          <button class="btn" id="exportMd">Exportar Markdown</button>
+          <a class="btn" href="#" id="ghHelp">Como subir no GitHub</a>
+        </div>
+      </div>
+      <div class="menu-section muted"><small>Última atualização: <!-- dynamic --></small></div>
+    </aside>
+
+    <main class="content" id="mainContent">
+
+      <section id="classes" class="card">
+        <h2>1 — Classes IPv4 (históricas)</h2>
+        <p class="muted">As classes A/B/C/D/E são históricas; atualmente usa-se CIDR — mas elas ajudam na leitura de documentos antigos.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Classe</th><th>1º octeto (decimal)</th><th>Faixa</th><th>Máscara padrão</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>0–127</td><td>0.0.0.0 – 127.255.255.255</td><td>/8</td><td>Grandes redes (histórico)</td></tr>
+              <tr><td>B</td><td>128–191</td><td>128.0.0.0 – 191.255.255.255</td><td>/16</td><td>Redes médias (histórico)</td></tr>
+              <tr><td>C</td><td>192–223</td><td>192.0.0.0 – 223.255.255.255</td><td>/24</td><td>Redes pequenas (histórico)</td></tr>
+              <tr><td>D</td><td>224–239</td><td>224.0.0.0 – 239.255.255.255</td><td>—</td><td>Multicast</td></tr>
+              <tr><td>E</td><td>240–255</td><td>240.0.0.0 – 255.255.255.255</td><td>—</td><td>Reservado/experimental</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details><summary>Observações</summary>
+          <ul>
+            <li><span class="kbd">127.0.0.0/8</span> é loopback.</li>
+            <li><span class="kbd">0.0.0.0</span> tem significado especial (rota default/esta rede).</li>
+            <li>Classes não determinam subnets modernas — use CIDR/VLSM.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="privadas" class="card">
+        <h2>2 — Faixas Privadas (RFC 1918)</h2>
+        <p class="muted">Endereços que não são roteados na Internet pública. Úteis para NAT, VPNs, e gestão interna.</p>
+        <table>
+          <thead><tr><th>Bloco</th><th>CIDR</th><th>Intervalo</th><th>Tamanho</th></tr></thead>
+          <tbody>
+            <tr><td>10.0.0.0</td><td>/8</td><td>10.0.0.0 – 10.255.255.255</td><td>16.777.216</td></tr>
+            <tr><td>172.16.0.0</td><td>/12</td><td>172.16.0.0 – 172.31.255.255</td><td>1.048.576</td></tr>
+            <tr><td>192.168.0.0</td><td>/16</td><td>192.168.0.0 – 192.168.255.255</td><td>65.536</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="especiais" class="card">
+        <h2>3 — Faixas Especiais e Uso Prático</h2>
+        <ul>
+          <li><strong>100.64.0.0/10</strong> — CGNAT (não roteável publicamente; para provedores).</li>
+          <li><strong>169.254.0.0/16</strong> — Link-local (APIPA), autoconfiguração quando não há DHCP.</li>
+          <li><strong>127.0.0.0/8</strong> — Loopback.</li>
+          <li><strong>224.0.0.0/4</strong> — Multicast (classe D).</li>
+          <li><strong>192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24</strong> — TEST-NETs para documentação.</li>
+          <li><strong>198.18.0.0/15</strong> — Testes/benchmarks entre redes.</li>
+        </ul>
+      </section>
+
+      <section id="barramento" class="card">
+        <h2>4 — Barramento / Capacidade (hosts por prefixo)</h2>
+        <p class="muted">O "barramento" aqui significa o domínio de broadcast e quantos hosts cabem em uma sub-rede.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Prefixo</th><th>Endereços</th><th>Hosts utilizáveis</th><th>Exemplo</th><th>Broadcast</th></tr></thead>
+            <tbody>
+              <tr><td>/30</td><td>4</td><td>2</td><td>192.0.2.4/30</td><td>192.0.2.7</td></tr>
+              <tr><td>/29</td><td>8</td><td>6</td><td>192.168.10.0/29</td><td>192.168.10.7</td></tr>
+              <tr><td>/28</td><td>16</td><td>14</td><td>10.0.0.16/28</td><td>10.0.0.31</td></tr>
+              <tr><td>/27</td><td>32</td><td>30</td><td>172.16.1.32/27</td><td>172.16.1.63</td></tr>
+              <tr><td>/26</td><td>64</td><td>62</td><td>192.168.5.64/26</td><td>192.168.5.127</td></tr>
+              <tr><td>/24</td><td>256</td><td>254</td><td>192.168.10.0/24</td><td>192.168.10.255</td></tr>
+              <tr><td>/23</td><td>512</td><td>510</td><td>10.10.0.0/23</td><td>10.10.1.255</td></tr>
+              <tr><td>/16</td><td>65.536</td><td>65.534</td><td>10.1.0.0/16</td><td>10.1.255.255</td></tr>
+              <tr><td>/12</td><td>1.048.576</td><td>1.048.574</td><td>172.16.0.0/12</td><td>172.31.255.255</td></tr>
+              <tr><td>/8</td><td>16.777.216</td><td>16.777.214</td><td>10.0.0.0/8</td><td>10.255.255.255</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details><summary>Exceções</summary>
+          <ul>
+            <li><strong>/31</strong> (RFC 3021) — ponto-a-ponto: 2 endereços utilizáveis, sem broadcast.</li>
+            <li><strong>/32</strong> — identifica um único host (loopback ou interface).</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="recomendacoes" class="card">
+        <h2>5 — Recomendações Práticas</h2>
+        <ul>
+          <li><strong>LAN de usuários:</strong> usar /24 em 192.168.x.0/16 para facilidade. Segmentar por VLAN.</li>
+          <li><strong>Gestão/OOB de provedores:</strong> usar 10.0.0.0/8 ou 172.16.0.0/12, planejar hierarquia por POP.</li>
+          <li><strong>CGNAT:</strong> usar 100.64.0.0/10 (evita conflitos com 10/8/172/192 internos dos clientes).</li>
+          <li><strong>Pontos-a-ponto:</strong> /31 quando suportado; economiza endereços.</li>
+          <li><strong>VPNs:</strong> escolher blocos que não colidam com clientes; documentar.</li>
+          <li><strong>Multicast:</strong> usar 239.0.0.0/8 para escopo administrativo quando necessário.</li>
+        </ul>
+      </section>
+
+      <section id="exemplos" class="card">
+        <h2>6 — Exemplos de Plano de Endereçamento</h2>
+        <details open>
+          <summary>Exemplo Provedor Regional</summary>
+          <pre>
+Gestão global: 10.0.0.0/12
+  POP Sul: 10.0.0.0/16  (VLANs de gestão /24 por site: 10.0.10.0/24 ...)
+  POP Norte: 10.1.0.0/16
+Loopbacks: 10.255.0.0/16 (/32 por equipamento)
+P2P backbone: 10.252.0.0/16 em /31
+CGNAT clientes: 100.64.0.0/10
+LAN assinantes (segmentado): 192.168.0.0/16 em /24 por bairro
+          </pre>
+        </details>
+        <details>
+          <summary>Exemplo Empresa Multi-sede</summary>
+          <pre>
+Matriz Usuários: 192.168.10.0/23
+Filiais: 192.168.20.0/24, 192.168.21.0/24
+Servidores internos: 172.16.100.0/24
+Gestão/OOB: 172.16.200.0/24
+VPN RA: 10.10.0.0/20
+          </pre>
+        </details>
+      </section>
+
+      <section id="glossario" class="card">
+        <h2>7 — Glossário Rápido</h2>
+        <ul>
+          <li><strong>CIDR:</strong> Classless Inter-Domain Routing, ex.: 192.168.10.0/24.</li>
+          <li><strong>VLSM:</strong> Subnetting com máscaras variadas.</li>
+          <li><strong>Broadcast:</strong> endereço para todos os hosts do segmento.</li>
+          <li><strong>Loopback:</strong> 127.0.0.1 (host local) ou /32 para roteadores.</li>
+          <li><strong>CGNAT:</strong> NAT em escala de provedor — 100.64.0.0/10.</li>
+        </ul>
+      </section>
+
+      <section id="anexo" class="card">
+        <h2>Anexo — Exemplos de cálculo de broadcast</h2>
+        <div class="card">
+          <h4>192.168.10.0/24</h4>
+          <p class="muted">Máscara: 255.255.255.0 — Rede: 192.168.10.0 — Broadcast: 192.168.10.255 — Hosts: 192.168.10.1–192.168.10.254</p>
+        </div>
+        <div class="card">
+          <h4>10.20.34.16/28</h4>
+          <p class="muted">Máscara: 255.255.255.240 — Rede: 10.20.34.16 — Broadcast: 10.20.34.31 — Hosts: 10.20.34.17–10.20.34.30</p>
+        </div>
+        <div class="card">
+          <h4>172.16.0.0/12 (bloco privado)</h4>
+          <p class="muted">Rede inicial: 172.16.0.0 — Broadcast do bloco: 172.31.255.255 — Capacidade: 1.048.574 hosts utilizáveis antes de subnetar.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Simple utilities
+    document.getElementById('printBtn').addEventListener('click',()=>window.print());
+
+    document.getElementById('downloadBtn').addEventListener('click',()=>{
+      const blob = new Blob([document.documentElement.outerHTML],{type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'guia-ipv4.html'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('copyAll').addEventListener('click',async()=>{
+      try{
+        await navigator.clipboard.writeText(document.getElementById('mainContent').innerText);
+        alert('Conteúdo copiado para a área de transferência');
+      }catch(e){alert('Falha ao copiar: '+e.message)}
+    });
+
+    document.getElementById('exportMd').addEventListener('click',()=>{
+      // Simple markdown conversion for key headings (best-effort)
+      const md = [];
+      document.querySelectorAll('#mainContent > section').forEach(sec=>{
+        const h = sec.querySelector('h2'); if(!h) return; md.push('## '+h.innerText+'\n');
+        sec.querySelectorAll('h4,pre,p,li,td').forEach(el=>{
+          if(el.tagName==='H4') md.push('#### '+el.innerText+'\n');
+          else if(el.tagName==='PRE') md.push('```
+'+el.innerText+'\n```\n');
+          else if(el.tagName==='P') md.push(el.innerText+'\n');
+        });
+      });
+      const blob = new Blob([md.join('\n')],{type:'text/markdown'});
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='guia-ipv4.md'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('ghHelp').addEventListener('click',(e)=>{
+      e.preventDefault();
+      alert('Para publicar no GitHub Pages: 1) Crie um repo, 2) Adicione este arquivo (index.html), 3) Ative GitHub Pages em Settings → Pages, selecione branch main e root. Pronto!');
+    });
+
+    // Search helper: jump to first matching section
+    document.getElementById('searchBox').addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){
+        const v=e.target.value.trim(); if(!v) return; const found = [...document.querySelectorAll('#mainContent *')].find(el=>el.innerText.includes(v)); if(found) found.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  </script>
+</body>
+</html>
